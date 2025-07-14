@@ -36,15 +36,15 @@ public class NewsController {
     }
 
     @PostMapping("/loadAndClassifyArticles")
-    public ResponseEntity<Boolean> loadAndClassifyMoreNews() {
+    public ResponseEntity<Boolean> loadAndClassifyMoreNews() throws Exception {
 
         boolean success = true;
-        try {
+        //try {
             newsLoaderService.loadAndClassifyArticles();
-        }
-        catch (Exception e) {
+        //}
+        //catch (Exception e) {
             success = false;
-        }
+        //}
 
         return ResponseEntity.ok(success);
     }
