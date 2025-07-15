@@ -24,7 +24,6 @@ public class CityService {
     }
 
     public List<String> findCitiesByQuery(String query) {
-        // Check if query contains a comma (searching city, state)
         if (query.contains(",")) {
             String[] parts = query.split(",");
             String cityPart = parts[0].trim();

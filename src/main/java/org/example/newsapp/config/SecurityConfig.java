@@ -59,7 +59,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://newsappusabucket.s3-website.eu-north-1.amazonaws.com"));
-        //configuration.setAllowedOrigins(List.of("http://newsapp.click", "http://www.newsapp.click", "https://staging.d1v7c6o62fzguk.amplifyapp.com"));
+        //configuration.setAllowedOrigins(List.of("https://staging.d2r5y1iqffjqu2.amplifyapp.com/"));
+        //configuration.setAllowedOrigins(List.of("https://newsapp.click"));
         configuration.setAllowedMethods(List.of("GET", "POST"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));

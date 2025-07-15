@@ -25,51 +25,51 @@ public class NewsClassifierService {
 
     public ClassificationResult classify(ArticleDto articleDto) {
         String prompt = """
-You are a precise and strict news classifier with these rules:
-
-CLASSIFICATION CRITERIA:
-1. LOCAL NEWS (must meet ALL):
-   - The news is primarily about events in a SPECIFIC U.S. city.
-   - The city is essential to understanding the story.
-   - The city must be a real U.S. city from the fixed city list.
-   - The city must be followed by the FULL state name (no abbreviations).
-   - Output JSON must be: {"scope":"local", "city":"CityName, StateName"}
-
-2. GLOBAL NEWS (any of these):
-   - No U.S. city is central to the story.
-   - Mentions of cities only incidental (birthplace, HQs, institutions).
-   - Output JSON must be: {"scope":"global", "city":null}
-
-ABSOLUTE RULES:
-- NEVER invent or hallucinate cities or states.
-- Always use full state names after the city, no abbreviations allowed.
-- Mentions like "born in [CITY]", "based in [CITY]", "headquartered in [CITY]" count as global.
-- Institution names do NOT count as locations.
-- The output must be strictly one of these two JSON objects and nothing else.
-
-RESPONSE FORMAT (ONLY JSON):
-{
-  "scope": "local"|"global",
-  "city": "CityName, StateName"|null
-}
-
-Examples of valid output:
-{"scope":"local", "city":"Chicago, Illinois"}
-{"scope":"global", "city":null}
-
-Invalid examples:
-{"scope":"local", "city":"Chicago"}          // Missing state name
-{"scope":"local", "city":"Chicago, IL"}      // State abbreviation not allowed
-{"scope":"mixed", "city":null}               // Scope must be "local" or "global"
-{"scope":"local", "city":"Toronto, Ontario"} // Non-US city
-
-Article to classify:
-Title: %s
-Content: %s
+        You are a precise and strict news classifier with these rules:
+        
+        CLASSIFICATION CRITERIA:
+        1. LOCAL NEWS (must meet ALL):
+           - The news is primarily about events in a SPECIFIC U.S. city.
+           - The city is essential to understanding the story.
+           - The city must be a real U.S. city from the fixed city list.
+           - The city must be followed by the FULL state name (no abbreviations).
+           - Output JSON must be: {"scope":"local", "city":"CityName, StateName"}
+        
+        2. GLOBAL NEWS (any of these):
+           - No U.S. city is central to the story.
+           - Mentions of cities only incidental (birthplace, HQs, institutions).
+           - Output JSON must be: {"scope":"global", "city":null}
+        
+        ABSOLUTE RULES:
+        - NEVER invent or hallucinate cities or states.
+        - Always use full state names after the city, no abbreviations allowed.
+        - Mentions like "born in [CITY]", "based in [CITY]", "headquartered in [CITY]" count as global.
+        - Institution names do NOT count as locations.
+        - The output must be strictly one of these two JSON objects and nothing else.
+        
+        RESPONSE FORMAT (ONLY JSON):
+        {
+          "scope": "local"|"global",
+          "city": "CityName, StateName"|null
+        }
+        
+        Examples of valid output:
+        {"scope":"local", "city":"Chicago, Illinois"}
+        {"scope":"global", "city":null}
+        
+        Invalid examples:
+        {"scope":"local", "city":"Chicago"}          // Missing state name
+        {"scope":"local", "city":"Chicago, IL"}      // State abbreviation not allowed
+        {"scope":"mixed", "city":null}               // Scope must be "local" or "global"
+        {"scope":"local", "city":"Toronto, Ontario"} // Non-US city
+        
+        Article to classify:
+        Title: %s
+        Content: %s
 """.formatted(articleDto.getTitle(), articleDto.getContent());
 
         ChatCompletionRequest request = ChatCompletionRequest.builder()
-                .model("gpt-4o")
+                .model("gpt-4o-mini")
                 .messages(List.of(new ChatMessage(ChatMessageRole.USER.value(), prompt)))
                 .temperature(0.2)
                 .build();
@@ -102,7 +102,6 @@ Content: %s
             boolean isGlobal = response.scope.equalsIgnoreCase("global");
 
             if (!isGlobal) {
-                // Local news - parse city and state
                 if (response.city == null || response.city.isBlank()) {
                     log.warn("Local scope but city is null or blank. Forcing global.");
                     return new ClassificationResult(true, null, null);
@@ -117,7 +116,7 @@ Content: %s
                 String cityName = parts[0].trim();
                 String stateName = parts[1].trim();
 
-                // Optional: you can add city/state validation here if you want
+                
 
                 return new ClassificationResult(false, cityName, stateName);
             }
