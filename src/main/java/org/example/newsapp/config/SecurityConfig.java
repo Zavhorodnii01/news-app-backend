@@ -22,6 +22,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+// This class configures security settings for the news application, including CORS, authentication, and password encoding.
 public class SecurityConfig {
 
     @Value("${spring.security.user.name}")
@@ -31,6 +32,8 @@ public class SecurityConfig {
     private String password;
 
     @Bean
+    // Configures the security filter chain for the application, enabling CORS, requiring authentication for all requests,
+    // using HTTP Basic authentication, and disabling CSRF protection.
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -41,11 +44,14 @@ public class SecurityConfig {
     }
 
     @Bean
+    // Provides a password encoder using BCrypt hashing algorithm.
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
+    // Configures an in-memory user details service with a single user, using the username from the configuration and a
+    // BCrypt encoded password, with the role 'USER'.
     public UserDetailsService users() {
         var user = User.builder()
                 .username(username)
@@ -56,6 +62,8 @@ public class SecurityConfig {
     }
 
     @Bean
+    // Configures CORS settings to allow requests from a specific origin, supporting GET and POST methods, all headers,
+    // and exposing the 'Authorization' header. Also, allows credentials and sets a max age of 3600 seconds for preflight requests.
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://newsappusabucket.s3-website.eu-north-1.amazonaws.com"));

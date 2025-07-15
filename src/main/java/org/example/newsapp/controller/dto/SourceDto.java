@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
+// Data Transfer Object representing a news source
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)

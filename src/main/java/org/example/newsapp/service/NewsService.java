@@ -22,6 +22,7 @@ public class NewsService {
     @Autowired
     private CityRepository cityRepository;
 
+    // Retrieves news articles for a specific city by its name and state name
     public List<ArticleDto> getNewsArticlesByCity(String cityName, String stateName)
     {
         City city = cityRepository
@@ -34,6 +35,7 @@ public class NewsService {
         return articles.stream().map(article -> modelMapper.map(article, ArticleDto.class)).toList();
     }
 
+    // Retrieves global news articles that are marked as global
     public List<ArticleDto> getGlobalNews()
     {
         List<Article> articles = articleRepository.findArticlesByGlobalTrue();
@@ -41,9 +43,3 @@ public class NewsService {
         return articles.stream().map(article -> modelMapper.map(article, ArticleDto.class)).toList();
     }
 }
-
-
-
-
-
-

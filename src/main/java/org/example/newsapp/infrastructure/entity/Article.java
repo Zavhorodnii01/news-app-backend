@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.ZonedDateTime;
 
+// Represents an article entity in the news application
 @Data
 @Entity
 @Table(name = "articles")

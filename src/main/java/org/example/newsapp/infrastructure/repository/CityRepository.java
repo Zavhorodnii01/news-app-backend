@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import java.util.Optional;
 
+// Repository interface for managing City entities.
+//Extends JpaRepository to provide CRUD operations
 public interface CityRepository extends JpaRepository<City, Long> {
 
     Optional<City> findCityByCityAndStateName(String cityName, String stateName);
@@ -17,7 +19,4 @@ public interface CityRepository extends JpaRepository<City, Long> {
     List<City> findByCityStartingWithIgnoreCase(String prefix);
 
     List<City> findByCityStartingWithIgnoreCaseAndStateNameStartingWithIgnoreCase(String city, String state);
-
 }
-
-

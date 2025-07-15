@@ -9,13 +9,16 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.ZonedDateTime;
 
+// Configuration class for setting up the ModelMapper bean
 @Configuration
 public class MapperConfig {
 
+    // Bean definition for ModelMapper, which is used to map between Article and ArticleDto objects
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
 
+        // Custom mappings for converting Article to ArticleDto
         mapper.addMappings(new PropertyMap<Article, ArticleDto>() {
             @Override
             protected void configure() {

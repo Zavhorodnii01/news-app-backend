@@ -38,7 +38,7 @@ public class NewsLoaderService {
     @Value("${news.api.url}")
     private String NEWS_API_URL;
 
-
+    // Fetches articles based on a query and page number, classifies them, and saves to the repository
     public void fetchAndSaveArticles(String query, int page) throws Exception {
         String url = NEWS_API_URL +
                 "?q=" + query.replace(" ", "%20") +
@@ -84,6 +84,7 @@ public class NewsLoaderService {
         }
     }
 
+    // Loads the top 100 most populated cities and fetches and classifies news articles for each city
     public void loadAndClassifyArticles() throws Exception {
         // 100 the most populated cities in the USA
         List<City> cities = cityRepository.findTop100ByOrderByPopulationDesc();
@@ -131,6 +132,7 @@ public class NewsLoaderService {
     }
 }
 
+// Represents the response from the news API, with properties status, totalResults, and articles
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -18,6 +18,7 @@ public class NewsController {
     @Autowired
     private NewsLoaderService newsLoaderService;
 
+    // Retrieves news articles specific to a city and state
     @GetMapping("/{cityName}/{stateName}")
     public ResponseEntity<List<ArticleDto>> getNewsArticlesByCity(
             @PathVariable String cityName,
@@ -28,6 +29,7 @@ public class NewsController {
         return ResponseEntity.ok(articleDtos);
     }
 
+    // Retrieves global news articles
     @GetMapping("/global")
     public ResponseEntity<List<ArticleDto>> getGlobalNewsArticles() {
         List<ArticleDto> articleDtos = newsService.getGlobalNews();
@@ -35,6 +37,7 @@ public class NewsController {
         return ResponseEntity.ok(articleDtos);
     }
 
+    // Loads and classifies more news articles
     @PostMapping("/loadAndClassifyArticles")
     public ResponseEntity<Boolean> loadAndClassifyMoreNews() throws Exception {
 
@@ -49,4 +52,3 @@ public class NewsController {
         return ResponseEntity.ok(success);
     }
 }
-

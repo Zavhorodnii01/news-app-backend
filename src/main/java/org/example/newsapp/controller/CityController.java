@@ -21,11 +21,13 @@ public class CityController {
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String state
     ) {
+        // Handles requests to retrieve a list of cities based on a query, specific city, or state
         if (query != null && !query.isBlank()) {
             return ResponseEntity.ok(cityService.findCitiesByQuery(query));
         }
 
         if (city != null && !city.isBlank()) {
+            // Retrieves city information based on city name and optionally state name
             List<String> results;
             if (state != null && !state.isBlank()) {
                 results = cityService.findCitiesByCityAndState(city, state);
@@ -35,6 +37,7 @@ public class CityController {
             return ResponseEntity.ok(results);
         }
 
+        // Returns the 100 most populated cities with their state names
         return ResponseEntity.ok(cityService.get100MostPopulatedCities()
                 .stream()
                 .map(c -> c.getCity() + ", " + c.getStateName())
@@ -49,7 +52,7 @@ public class CityController {
             @PathVariable String cityName,
             @PathVariable String stateName
     ) {
-
+        // Retrieves detailed information about a specific city in a specific state
         return ResponseEntity.ok(cityService.getInfoByCityName(cityName, stateName));
     }
 }

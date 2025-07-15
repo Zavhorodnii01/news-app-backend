@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+// Represents a city entity in the news application
 @Getter
 @Setter
 @Entity
